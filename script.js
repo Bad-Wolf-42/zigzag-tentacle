@@ -1,10 +1,10 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-canvas.width = 400;
+canvas.width = 700;
 canvas.height = 500;
 
 let segmentsArray = [];
-const maxSegments = 1;
+const maxSegments = 10;
 
 class Segment {
   constructor(index, width) {
@@ -13,7 +13,7 @@ class Segment {
     this.ax = (this.index === 0) ? canvas.width/2 : segmentsArray[index - 1].bx;
     this.ay = (this.index === 0) ? canvas.height : segmentsArray[index - 1].by;
     this.theta = -Math.PI / 2;
-    this.length = 100;
+    this.length = 30;
     this.dx = Math.cos(this.theta) * this.length;
     this.dy = Math.sin(this.theta) * this.length;
     this.bx = this.ax + this.dx;
@@ -28,9 +28,25 @@ class Segment {
     ctx.lineTo(this.bx, this.by);
     ctx.stroke();
   }
+  update() {}
 }
 
-segmentsArray.push(new Segment(0, 10));
-segmentsArray.push(new Segment(1, 8));
-segmentsArray[0].draw();
-segmentsArray[1].draw();
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (i = 0; i < segmentsArray.length; i++) {
+    segmentsArray[i].update();
+    segmentsArray[i].draw();
+  }
+  requestAnimationFrame(animate);
+}
+
+function init() {
+  let segmentWidth = maxSegments;
+  for (i = 0; i < maxSegments; i++) {
+    segmentsArray.push(new Segment(i, segmentWidth));
+    segmentWidth -= 1;
+  }
+  animate();
+}
+
+init();
