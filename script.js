@@ -4,7 +4,7 @@ canvas.width = 700;
 canvas.height = 500;
 
 let segmentsArray = [];
-const maxSegments = 10;
+const maxSegments = 20; //10
 
 let mouse = {
   x: null,
@@ -18,7 +18,7 @@ class Segment {
     this.ax = (this.index === 0) ? canvas.width/2 : segmentsArray[index - 1].bx;
     this.ay = (this.index === 0) ? canvas.height : segmentsArray[index - 1].by;
     this.theta = 0;
-    this.length = 30;
+    this.length = (index !== 0) ? 25 : 45; //30
     this.dx = Math.cos(this.theta) * this.length;
     this.dy = Math.sin(this.theta) * this.length;
     this.bx = this.ax + this.dx;
@@ -36,8 +36,8 @@ class Segment {
   update() {
     this.ax = (this.index === 0) ? canvas.width/2 : segmentsArray[this.index - 1].bx;
     this.ay = (this.index === 0) ? canvas.height : segmentsArray[this.index - 1].by;
-    if (this.index !== 0) this.theta = segmentsArray[this.index - 1].theta - 0.5;
-    else if (this.index === 0) this.theta = calculateAngle(this.ax, this.ay);
+    if (this.index !== 0) this.theta = segmentsArray[this.index - 1].theta - Math.PI/2; // -0.5
+    else if (this.index === 0) this.theta = calculateAngle(this.ax, this.ay); //this.theta += 0.05
     this.dx = Math.cos(this.theta) * this.length;
     this.dy = -Math.abs(Math.sin(this.theta) * this.length);
     this.bx = this.ax + this.dx;
